@@ -40,11 +40,13 @@ export const createAccount = async ({
   email: string;
 }) => {
   const existingUser = await getUserByEmail(email);
+
   const accountId = await sendEmailOTP({ email });
-  if (!accountId) throw new Error("Error creating account");
+  if (!accountId) throw new Error("Failed to send an OTP");
 
   if (!existingUser) {
     const { databases } = await createAdminClient();
+
     await databases.createDocument(
       appwriteConfig.databaseId,
       appwriteConfig.usersCollectionId,
@@ -52,11 +54,11 @@ export const createAccount = async ({
       {
         fullName,
         email,
-        avatar:
-          "https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_960_720.png",
+        avatar: "https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_960_720.png",
         accountId,
-      }
+      },
     );
   }
+
   return parseStringify({ accountId });
 };

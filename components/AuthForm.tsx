@@ -10,6 +10,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { createAccount } from "@/lib/actions/user.actions";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import Image from "next/image";
@@ -20,20 +21,22 @@ import { z } from "zod";
 
 type FormType = "sign-in" | "sign-up";
 
-
 const authFormSchema = (formType: FormType) => {
   return z.object({
     email: z.string().min(2).max(50),
-    fullName: formType === "sign-up" ? z.string().min(2).max(50) : z.string().optional(),
+    fullName:
+      formType === "sign-up"
+        ? z.string().min(2).max(50)
+        : z.string().optional(),
   });
 };
-
 
 const AuthForm = ({ type }: { type: FormType }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-  
-  const formSchema = authFormSchema(type)
+  const [accountId, setAccountId] = useState(null)
+
+  const formSchema = authFormSchema(type);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(authFormSchema(type)),
     defaultValues: {
@@ -42,11 +45,21 @@ const AuthForm = ({ type }: { type: FormType }) => {
     },
   });
 
-  // 2. Define a submit handler.
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
+  async function onSubmit(values: z.infer<typeof formSchema>) {
     console.log(values);
+    setIsLoading(true);
+    setErrorMessage("");
+    try {
+      const user = await createAccount({
+        fullName: values.fullName || "",
+        email: values.email
+      });
+      setAccountId(user.accountId)
+    } catch (error) {
+      setErrorMessage("An error occurred. Please try again.");
+    } finally {
+      setIsLoading(false);
+    }
   }
 
   return (
@@ -94,7 +107,7 @@ const AuthForm = ({ type }: { type: FormType }) => {
               </FormItem>
             )}
           />
-          
+
           <Button
             type="submit"
             className="form-submit-button"
