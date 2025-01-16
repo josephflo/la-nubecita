@@ -18,6 +18,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import OTPModal from "./OTPModal";
 
 type FormType = "sign-in" | "sign-up";
 
@@ -45,7 +46,7 @@ const AuthForm = ({ type }: { type: FormType }) => {
     },
   });
 
-  async function onSubmit(values: z.infer<typeof formSchema>) {
+  const onSubmit = async (values: z.infer<typeof formSchema>) =>{
     console.log(values);
     setIsLoading(true);
     setErrorMessage("");
@@ -144,6 +145,7 @@ const AuthForm = ({ type }: { type: FormType }) => {
         </form>
       </Form>
       {/* OTP VERIFICATION */}
+      {true && <OTPModal accountId={accountId} email={form.getValues("email")} />}
     </>
   );
 };

@@ -11,24 +11,26 @@ const getUserByEmail = async (email: string) => {
   const result = await databases.listDocuments(
     appwriteConfig.databaseId,
     appwriteConfig.usersCollectionId,
-    [Query.equal("email", [email])]
+    [Query.equal("email", [email])],
   );
+
   return result.total > 0 ? result.documents[0] : null;
 };
 
-const handleErrror = (error: unknown, message: string) => {
+const handleError = (error: unknown, message: string) => {
   console.error(error, message);
   throw error;
 };
 
-const sendEmailOTP = async ({ email }: { email: string }) => {
+export const sendEmailOTP = async ({ email }: { email: string }) => {
   const { account } = await createAdminClient();
 
   try {
     const session = await account.createEmailToken(ID.unique(), email);
+
     return session.userId;
   } catch (error) {
-    handleErrror(error, "Error sending email OTP");
+    handleError(error, "Failed to send email OTP");
   }
 };
 
