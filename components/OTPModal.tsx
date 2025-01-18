@@ -33,7 +33,7 @@ const OTPModal = ({
 }) => {
   const router = useRouter();
   //states
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(true);
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
@@ -60,7 +60,7 @@ const OTPModal = ({
   };
 
   return (
-    <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
+    <AlertDialog open={open} onOpenChange={setOpen}>
       <AlertDialogContent className="shad-alert-dialog">
         <AlertDialogHeader className="relative flex justify-center">
           <AlertDialogTitle className="h2 text-center">
@@ -70,7 +70,7 @@ const OTPModal = ({
               alt="close"
               width={20}
               height={20}
-              onClick={() => setIsOpen(false)}
+              onClick={() => setOpen(false)}
               className="otp-close-button"
             />
           </AlertDialogTitle>
@@ -116,7 +116,7 @@ const OTPModal = ({
                 type="button"
                 variant="link"
                 className="pl-1 text-brand"
-                onClick={handleResendOtp}
+                onClick={handleResendOTP}
               >
                 Click to resend
               </Button>
