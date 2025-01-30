@@ -108,3 +108,15 @@ export const getCurrentUser = async () => {
 
   return parseStringify(user.documents[0]);
 };
+
+
+export const signOutUser = async () => {
+  const { account } = createSessionClient();
+
+  try {
+    await account.deleteSession("current");
+    (await cookies()).delete("appwrite-session");
+  } catch (error) {
+    
+  }
+}
