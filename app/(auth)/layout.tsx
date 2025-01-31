@@ -21,7 +21,7 @@ const layout = ({ children }: { children: ReactNode }) => {
             </p>
           </div>
           <Image
-            src="/assets/images/files.png"
+            src="/lanubecita.png"
             width={224}
             height={224}
             alt="cloud"

@@ -17,6 +17,7 @@ import { useState } from "react";
 import { usePathname } from "next/navigation";
 import { Button } from "./ui/button";
 import FileUploader from "./FileUploader";
+import { signOutUser } from "@/lib/actions/user.actions";
 
 interface Props {
   ownerId: string;
@@ -95,8 +96,8 @@ const MobileNavigation = ({
             <FileUploader />
 
             <Button type="submit" className="mobile-sign-out-button"
-            onClick={() => {}}
-            >
+            onClick={async () => { await signOutUser(); }}>
+            
               <Image
                 src={"/assets/icons/logout.svg"}
                 alt="Logout"

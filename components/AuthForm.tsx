@@ -10,7 +10,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { createAccount } from "@/lib/actions/user.actions";
+import { createAccount, signInUser } from "@/lib/actions/user.actions";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import Image from "next/image";
@@ -51,11 +51,15 @@ const AuthForm = ({ type }: { type: FormType }) => {
     setIsLoading(true);
     setErrorMessage("");
     try {
-      const user = await createAccount({
-        fullName: values.fullName || "",
-        email: values.email
-      });
-      setAccountId(user.accountId)
+      const user =
+      type === "sign-up"
+        ? await createAccount({
+            fullName: values.fullName || "",
+            email: values.email,
+          })
+        : await signInUser({ email: values.email });
+
+    setAccountId(user.accountId);
     } catch (error) {
       setErrorMessage("An error occurred. Please try again.");
     } finally {
