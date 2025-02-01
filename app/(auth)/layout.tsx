@@ -22,8 +22,8 @@ const layout = ({ children }: { children: ReactNode }) => {
           </div>
           <Image
             src="/lanubecita.png"
-            width={224}
-            height={224}
+            width={548}
+            height={548}
             alt="cloud"
             className="transition-all hover:rotate-2 hover:scale-105"
           />
