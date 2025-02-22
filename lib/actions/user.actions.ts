@@ -1,9 +1,9 @@
 "use server";
 
-import { ID, Query } from "node-appwrite";
-import { createAdminClient, createSessionClient } from "../appwrite";
-import { appwriteConfig } from "../appwrite/config";
-import { parseStringify } from "../utils";
+import { createAdminClient, createSessionClient } from "@/lib/appwrite";
+import { appwriteConfig } from "@/lib/appwrite/config";
+import { Query, ID } from "node-appwrite";
+import { parseStringify } from "@/lib/utils";
 import { cookies } from "next/headers";
 import { avatarPlaceholderUrl } from "@/constants";
 import { redirect } from "next/navigation";
@@ -14,14 +14,14 @@ const getUserByEmail = async (email: string) => {
   const result = await databases.listDocuments(
     appwriteConfig.databaseId,
     appwriteConfig.usersCollectionId,
-    [Query.equal("email", [email])]
+    [Query.equal("email", [email])],
   );
 
   return result.total > 0 ? result.documents[0] : null;
 };
 
 const handleError = (error: unknown, message: string) => {
-  console.error(error, message);
+  console.log(error, message);
   throw error;
 };
 
@@ -61,7 +61,7 @@ export const createAccount = async ({
         email,
         avatar: avatarPlaceholderUrl,
         accountId,
-      }
+      },
     );
   }
 
