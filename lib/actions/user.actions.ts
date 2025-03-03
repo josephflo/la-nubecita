@@ -86,7 +86,7 @@ export const verifySecret = async ({
       sameSite: "strict",
       secure: true,
     });
-
+    if(session) console.log("cookie creada con exito")
     return parseStringify({ sessionId: session.$id });
   } catch (error) {
     handleError(error, "Failed to verify OTP");
@@ -105,11 +105,12 @@ export const getCurrentUser = async () => {
       [Query.equal("accountId", result.$id)],
     );
 
-    if (user.total <= 0) return null;
-
+    // if (user.total <= 0) return null;
+    if(user.total <= 0) console.log(`THis the user${user.total}`)
+ 
     return parseStringify(user.documents[0]);
-  } catch (error) {
-    console.log(error);
+  } catch (error:any) {
+    console.log(error.message);
   }
 };
 
